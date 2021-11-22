@@ -1,0 +1,24 @@
+name: Build and Test
+on: [push]
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup NodeJs
+        uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
+      - name: Install dependencies     
+        run: npm install
+      - name: Start Server
+        run: npm run server &
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SERVER_SESSION_SECRET: ${{ secrets.SERVER_SESSION_SECRET }}
+      - name: Client side unit tests
+        working-directory: ./src
+        run: npm run test
+        env:
+          REACT_APP_GOOGLE_API_KEY: ${{ secrets.REACT_APP_GOOGLE_API_KEY }}        
