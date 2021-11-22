@@ -9,7 +9,7 @@ In the mists of COVID-19, I realize that I have always valued safety especially 
 
 FreeGo is a mobile application that allows the user to travel hazard free! With FreeGo, users will be able to receive live updates on hazards that are occurring in their area and be able to see them on rendered on a map! All hazards are posted by other users in the area that saw and reported that issue as well as hazards reported from external sources such as police department here Minneapolis. This way, users can use this application to keep themselves and others safe during their day-to-day lives.  
 
-Live demo of the project can be found here: https://freego-hazard-free.herokuapp.com/#/map
+Live demo of the project can be found here: https://demo.cautiontechllc.com
 
 ## Build With 
 <a href="https://www.heroku.com/"><img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/heroku/heroku-original.svg" height="40px" width="40px"></a>
