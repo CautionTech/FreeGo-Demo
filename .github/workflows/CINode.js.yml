@@ -18,7 +18,6 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           SERVER_SESSION_SECRET: ${{ secrets.SERVER_SESSION_SECRET }}
       - name: Client side unit tests
-        working-directory: ./src
         run: npm run test
         env:
           REACT_APP_GOOGLE_API_KEY: ${{ secrets.REACT_APP_GOOGLE_API_KEY }}        
