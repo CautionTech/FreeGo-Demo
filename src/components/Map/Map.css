@@ -1,0 +1,88 @@
+.map-popup-container {
+  display: block;
+  position: relative;
+}
+
+.popup-map-item {
+  position:absolute;
+  left: 0; 
+  right: 0; 
+  bottom: 25px;
+  margin-left: auto; 
+  margin-right: auto; 
+  width: 25%;
+  z-index: 9999;
+  cursor: pointer;
+  text-align: center;
+}
+
+.popup-map-item .row {
+  padding: 10px;
+  background: white;
+  border-radius: 9px;
+  box-shadow: 1px 1px 1px 1px black;
+}
+
+.map-popup-container .image-container img {
+  height: 100px;
+  width: 100px;
+  border-radius: 9px;
+}
+
+.popup-map-item .badge-primary {
+  color: #fff;
+  background-color: #007bff;
+  width: 45%;
+  text-transform: uppercase;
+}
+
+.badge-moderate {
+  background-color: #fa8c16 !important;
+}
+
+.badge-severe {
+  background-color: #fa3816 !important;
+}
+
+.map-card-location {
+  font-size: 12px
+}
+
+.map-container-group{
+  padding: 10px;
+}
+.map-container-group .form-control {
+  margin-bottom: 10px;
+}
+
+.filter-expand {
+  margin: 10px 0px;
+}
+
+.btn-map-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  border: none;
+}
+
+.btn-map-close:hover {
+  background: red;
+  color: white;
+}
+
+@media only screen and (max-width: 600px) {
+  .popup-map-item {
+    position:absolute;
+    left: 0; 
+    right: 0; 
+    bottom: 25px;
+    margin-left: auto; 
+    margin-right: auto; 
+    width: 90%;
+    z-index: 9999;
+    cursor: pointer;
+    text-align: center;
+  }
+}

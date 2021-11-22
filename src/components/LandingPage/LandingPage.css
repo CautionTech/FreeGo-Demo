@@ -1,0 +1,43 @@
+.hazard-card {
+  cursor: pointer;
+}
+
+.Hazard-Genre{
+  color: black;
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.threat{
+  font-size: 14px;
+}
+
+.threat span {
+  color: darkcyan;
+}
+
+.threatLevel span{
+  color: darkcyan;
+}
+
+i{
+  color: darkcyan;
+}
+
+.badge-primary {
+  color: #fff;
+  background-color: #007bff;
+}
+
+.hazard-card img {
+  width: 200px;
+  height: 200px;
+}
+
+@media only screen and (max-width: 600px) {
+  .hazard-card img, .hazard-management-card img {
+    width: 100%;
+    height: 200px;
+  }
+}

@@ -1,0 +1,31 @@
+.user-settings-menu .badge {
+  color: grey;
+  font-size: 18px;
+}
+
+.user-settings-menu .list-group-item {
+  cursor: pointer;
+  display: flex !important;
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
+
+.user-settings-menu .list-group-item:hover {
+  background: #064c06;
+  color: white;
+}
+
+/* --------------------------------------------------
+Mobile Styles
+*/
+
+@media only screen and (max-width: 600px) {
+  .user-settings-info {
+    margin-bottom: 25px
+  }
+}
+
+
+
+
+

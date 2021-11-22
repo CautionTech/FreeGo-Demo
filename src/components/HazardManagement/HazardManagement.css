@@ -1,0 +1,24 @@
+.btn-hazard-management-delete, .btn-hazard-management-edit {
+  background: white;
+  color: darkcyan;
+  border-radius: 50%;
+  border: 1px solid darkcyan;
+}
+
+.hazard-management-card {
+  margin-bottom: 10px;
+}
+
+.btn-hazard-management-delete .svg-inline--fa.fa-w-18, .btn-hazard-management-edit .svg-inline--fa.fa-w-18{
+  margin: 0px !important;
+}
+
+.hazard-management-button-container {
+  text-align: right;
+  margin: 10px;
+}
+
+.btn-hazard-management-delete:hover, .btn-hazard-management-edit:hover {
+  background: darkcyan;
+  color: white;
+}
