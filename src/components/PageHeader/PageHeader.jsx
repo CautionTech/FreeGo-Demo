@@ -21,10 +21,10 @@ function PageHeader({title, description}) {
           <li></li>
           <li></li>
         </ul>
-      <div className="container">
+      <div className="container rounded">
         <div className="row page-header-row">
-          <div className="col-lg-6">
-            <div className="bg-white rounded-lg shadow p-5">
+          <div className="col-sm-6">
+            <div className="bg-white rounded-lg shadow p-3">
               <h2 className="mb-3">{title}</h2>
               <p className="text-muted">{description}</p>
             </div>

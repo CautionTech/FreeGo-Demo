@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createRef, useMemo } from "react";
 import "leaflet/dist/leaflet.css";
 import { useDispatch, useSelector } from "react-redux";
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -10,7 +10,8 @@ import useWatchLocation from "../../hooks/useWatchLocation";
 import { geolocationOptions } from "../../constants/geolocationOptions";
 import {  addDays, subDays } from 'date-fns';
 import ReactToolTip from 'react-tooltip';
-import { Modal, Button } from "react-bootstrap";
+import { Button } from "react-bootstrap";
+import Plot from "react-plotly.js";
 const dotenv = require("dotenv");
 dotenv.config({ path: ".env" });
 
@@ -53,7 +54,7 @@ function MapContainer({userLocation}) {
   const { location, cancelLocationWatch, error } = useWatchLocation(geolocationOptions);
   const [isWatchinForLocation, setIsWatchForLocation] = useState(true);
   const dashBoard = useSelector(store => store.dashBoardReducer);
-  const [expanded, set_expanded] = useState('Expand Filters')
+  const [expanded, set_expanded] = useState('Expand Filters');
   const [created_date, setCreated_Date] = useState([
     {
       startDate: subDays(new Date(), 30),
@@ -64,7 +65,7 @@ function MapContainer({userLocation}) {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
+  const [state, setState] = useState({labels: [],datasets: [{label: '', hoverBackgroundColor: [], backgroundColor: [], data: []}]});
   /**
    * making fetch request to  get the hazard genre/category 
    * */ 
@@ -93,6 +94,10 @@ function MapContainer({userLocation}) {
       cancelLocationWatch();
       setIsWatchForLocation(false);
     }, 3000);
+    const interval = setInterval(() => {
+      getStats();
+    }, 600);
+    return () => clearInterval(interval);
   }, [location, cancelLocationWatch]);
 
   /**
@@ -128,58 +133,46 @@ function MapContainer({userLocation}) {
         console.error(error);
       }
     );
-    handleShow();
+      setState({labels: [],datasets: [{label: '', hoverBackgroundColor: [], backgroundColor: [], data: []}]});
   }
 
-  const getMapping = (genre) => {
-    let pElment = "";
-
-    for (let [key, value] of genre) {
-      pElment = pElment + key + " : " + value + "<br>";
-    }
-    return pElment;
-  };
-
   const getStats = () => {
-    let numberOfHazards = dashBoard.length;
-    let approvedNumber = 0;
-    const genre = new Map();
-    for (let index = 0; index < dashBoard.length; index++) {
-      if (dashBoard[index].approved) {
-        approvedNumber++;
+    if (state.labels == 0) {
+      let numberOfHazards = dashBoard.length;
+      let approvedNumber = 0;
+      const genre = new Map();
+      for (let index = 0; index < dashBoard.length; index++) {
+        if (dashBoard[index].approved) {
+          approvedNumber++;
+        }
+        if (genre.has(dashBoard[index].title)) {
+          genre.set(dashBoard[index].title, genre.get(dashBoard[index].title) + 1);
+        }
+        else {
+          genre.set(dashBoard[index].title, 1);
+        }
       }
-      if (genre.has(dashBoard[index].title)) {
-        genre.set(dashBoard[index].title, genre.get(dashBoard[index].title) + 1);
+      let newlabels = [];
+      let newcolors = [];
+      let newdata = [];
+      for (let [key, value] of genre) {
+        newlabels.push(key);
+        newcolors.push(getRandomColor());
+        newdata.push(value);
       }
-      else {
-        genre.set(dashBoard[index].title, 1);
-      }
+      setState({labels: newlabels,datasets: [{label: '', hoverBackgroundColor: newcolors, backgroundColor: newcolors, data: newdata}]});
     }
-    return (
-      <div>
-        Here are the hazard stats of your current request.
-        <h3>
-          Number of hazards
-        </h3>
-        <p>
-          There are a total of {numberOfHazards} hazards
-        </p>
-        <h3>
-          Number of approved hazards
-        </h3>
-        <p>
-          There are a total of {approvedNumber} approved hazards
-        </p>
-        <h3>
-          Genre Distribution
-        </h3>
-        <p>
-          Here is the distribution of hazards: 
-          {<div dangerouslySetInnerHTML={{__html: getMapping(genre)}}></div>}
-        </p>
-      </div>
-    );
+
   };
+
+  function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
 
   function click() {
     set_expanded('Close Filters')
@@ -234,14 +227,6 @@ function MapContainer({userLocation}) {
         <p>
          Capture the radius from your selected location and radius number. 
           This allows users to isolate an area of the map to view. 
-        </p>
-        <Button onClick={() => {window.location.href='https://forms.gle/MePiPYzQ4DAerStYA'}} type="button" className="btn btn-lg btn-primary float-right pull-right">Please Take Our Survery Here</Button>
-        <h2>
-          Statistics
-        </h2>
-        <p>
-          once you press "Find Location," a pop up 
-          will show you the current statistics of all hazards.
         </p>
         <div>
           <div className="form-group map-container-group card">
@@ -317,28 +302,30 @@ function MapContainer({userLocation}) {
             </div>
           </div>
         </div>
-        {mapaddress ? (
-          <MapComponent address={mapaddress} />
-        ) : (
-          <MapComponent address={location} />
-        )}
-        <Modal show={show} onHide={handleClose} size="sm" keyboard={true} scrollable={true}>
-          <Modal.Header closeButton>
-            <Modal.Title>
-              Hazard Statistics
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            {dashBoard.length > 0 ? 
-            getStats()
-            :
-            <p>{address == 'Minneapolis' ? "Please wait for hazard stats to show up" : "We only have Minneapolis locations available. The location you are searching does not have any hazards."}</p>
-            }
-            <Button onClick={handleClose}>
-              Close popup
-            </Button>
-          </Modal.Body>
-        </Modal>
+        <div className="pull-center text-center">
+          <Button onClick={() => {window.location.href='https://forms.gle/MePiPYzQ4DAerStYA'}} type="button" className="btn btn-lg btn-primary pull-center text-center">Please Take Our Survery Here</Button>
+        </div>
+        <div className="row pull-center">
+              <div className="col-lg">
+                {mapaddress ? (
+                  <MapComponent address={mapaddress} />
+                ) : (
+                  <MapComponent address={location} />
+                )}
+              </div>
+              <div className="col">
+                <Plot
+                  data={[
+                    {
+                      values: state.datasets[0].data,
+                      labels: state.labels,
+                      type: "pie"
+                    }
+                  ]}
+                  layout={{autosize: true, width: '500', height: '500', title: 'FreeGo: Hazard Free Travel Statistics Dashboard', annotations: [{text: state.labels.length == 0 ? (address == 'Minneapolis') ? 'There is currently no data to display' : 'Only minneapolis data is available right now. Sorry for the inconvience.' : null}] }}
+                />
+              </div>
+        </div>
       </div>
     </>
   );

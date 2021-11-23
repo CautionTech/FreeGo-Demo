@@ -49,19 +49,19 @@ function Nav() {
                         Please Take Survey
                       </span>
                     </a>
-                    <Link className="navLink" to="/home">
+                    {/* <Link className="navLink" to="/home">
                       <FontAwesomeIcon icon={faHome} />
                       <span className="hide-on-mobile">
                         Home
                       </span>
-                    </Link>
+                    </Link> */}
 
-                    <Link className="navLink" to='/notifications/{user.id}'>
+                    {/* <Link className="navLink" to='/notifications/{user.id}'>
                       <FontAwesomeIcon icon={faBell} />
                       <span className="hide-on-mobile">
                         Notifications
                       </span>
-                    </Link>
+                    </Link> */}
 
                     <Link className="navLink" to="/map">
                       <FontAwesomeIcon icon={faMapMarkedAlt} />
