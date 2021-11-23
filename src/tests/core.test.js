@@ -9,5 +9,6 @@ import Adapter from "enzyme-adapter-react-16";
 configure({ adapter: new Adapter() });
 
 it("Renders without crashing", () => {
+    // pushes
     shallow(<Provider store={store}><App /></Provider>);
 });
