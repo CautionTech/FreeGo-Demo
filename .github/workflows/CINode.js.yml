@@ -21,3 +21,13 @@ jobs:
         run: npm run test
         env:
           REACT_APP_GOOGLE_API_KEY: ${{ secrets.REACT_APP_GOOGLE_API_KEY }}        
+  deploy: ## <-- this is the new stuff
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "freego-hazard-free"
+          heroku_email: "sulaimanbada8048@gmail.com"
