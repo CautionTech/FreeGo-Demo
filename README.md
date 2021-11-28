@@ -81,5 +81,3 @@ We would like to thank Prime Digital Academy who equipped and helped us to make 
 # Support 
 If you would like to support this project, please contact Sulaiman Bada at sulaimanbada8048@gmail.com
 
-Thank you for reading through our project. 
-
