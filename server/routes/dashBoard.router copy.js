@@ -96,7 +96,7 @@ router.get("/", async (req, res) => {
     
     //Making axios get request to open Minneapolis Api
     const openApiData = await axios.get(
-      `https://services.arcgis.com/afSMGVsC7QlRK1kZ/arcgis/rest/services/Police_Incidents_2017/FeatureServer/0/query?where=1%3D1&outFields=PublicAddress,ReportedDate,BeginDate,Offense,Description,UCRCode,GBSID,Long,Lat,X,Y,Neighborhood,LastChanged,LastUpdateDate&geometry=` + getBoundingBox([userLat, userLng], distance) + `&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&outSR=4326&f=json&resultRecordCount=200`
+      `https://services.arcgis.com/afSMGVsC7QlRK1kZ/arcgis/rest/services/Police_Incidents_2021/FeatureServer/0/query?where=1%3D1&outFields=publicaddress,reportedDate,beginDate,offense,description,UCRCode,centergbsid,centerLong,centerLat,centerX,centerY,neighborhood,lastchanged,LastUpdateDateETL&geometry=` + getBoundingBox([userLat, userLng], distance) + `&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&outSR=4326&f=json&resultRecordCount=200`
     );
 
     const data = dbData.rows;
@@ -110,22 +110,22 @@ router.get("/", async (req, res) => {
 
     if(openApiData) {
       openDataApi.map((item, index) => {
-        if(containsAny(item.attributes.Description, ["RAPE", "MURDER"])) {
+        if(containsAny(item.attributes.description, ["RAPE", "MURDER"])) {
         } else {
           ODAPIDMODIFIED.push({
             approved: true,
-            name: item.attributes.Description,
+            name: item.attributes.description,
             city: "Minneapolis",
             state: "mn",
-            street: item.attributes.PublicAddress,
+            street: item.attributes.publicaddress,
             zip: "",
             threat_level: fakeThreatLevels[Math.floor(Math.random()*fakeThreatLevels.length)],
-            latitude: item.attributes.Lat,
-            longitude: item.attributes.Long,
+            latitude: item.attributes.centerLat,
+            longitude: item.attributes.centerLong,
             created_date: "",
             image: "https://source.unsplash.com/400x300/?roads/" + index,
-            title: item.attributes.Description,
-            description: item.attributes.Description,
+            title: item.attributes.description,
+            description: item.attributes.description,
             user_id: 1,
             is_minn: true,
           });
